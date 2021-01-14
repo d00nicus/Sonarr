@@ -3,7 +3,6 @@ using NUnit.Framework;
 using NzbDrone.Core.Parser;
 using NzbDrone.Core.Qualities;
 using NzbDrone.Core.Test.Framework;
-using NzbDrone.Test.Common;
 
 namespace NzbDrone.Core.Test.ParserTests
 {
@@ -88,6 +87,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Da.Vincis.Demons.S02E04.480p.WEB.DL.nSD.x264-NhaNc3", false)]
         [TestCase("Incorporated.S01E08.Das.geloeschte.Ich.German.Dubbed.DL.AmazonHD.x264-TVS", false)]
         [TestCase("Haters.Back.Off.S01E04.Rod.Trip.mit.meinem.Onkel.German.DL.NetflixUHD.x264", false)]
+        [TestCase("[HorribleSubs] Series Title! S01 [Web][MKV][h264][480p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl480p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBDL480p, proper);
@@ -193,6 +193,8 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("into.the.badlands.s03e16.h264.720p-web-handbrake.mkv", false)]
         [TestCase("BrainDead.S01E01.The.Insanity.Principle.720p.WEB-DL.DD5.1.H.264-BD", false)]
         [TestCase("Jerks.S03E05.Griebnitzsee.German.720p.MaxdomeHD.AVC-TVS", false)]
+        [TestCase("[HorribleSubs] Series Title! S01 [Web][MKV][h264][720p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
+        [TestCase("[HorribleSubs] Series Title! S01 [Web][MKV][h264][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl720p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBDL720p, proper);
@@ -230,6 +232,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Legacies.S02E02.This.Year.Will.Be.Different.1080p.AMZN.WEB...", false)]
         [TestCase("Legacies.S02E02.This.Year.Will.Be.Different.1080p.AMZN.WEB.", false)]
         [TestCase("Series Title - S01E11 2020 1080p Viva MKV WEB", false)]
+        [TestCase("[HorribleSubs] Series Title! S01 [Web][MKV][h264][1080p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBDL1080p, proper);
@@ -240,6 +243,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Better.Call.Saul.S03E09.1080p.NF.WEBRip.DD5.1.x264-ViSUM", false)]
         [TestCase("The Walking Dead S09E13 1.54 GB WEB-RIP 1080p Dual-Audio 2019 MKV", false)]
         [TestCase("Series.Title.1x04.ITA.1080p.WEBMux.x264-NovaRip", false)]
+        [TestCase("Series.Title.2019.S02E07.Chapter.15.The.Believer.4Kto1080p.DSNYP.Webrip.x265.10bit.EAC3.5.1.Atmos.GokiTAoE", false)]
         public void should_parse_webrip1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBRip1080p, proper);
@@ -250,6 +254,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("The.Nightly.Show.2016.03.14.2160p.WEB.PROPER.h264-spamTV", true)]
         [TestCase("House.of.Cards.US.s05e13.4K.UHD.WEB.DL", false)]
         [TestCase("House.of.Cards.US.s05e13.UHD.4K.WEB.DL", false)]
+        [TestCase("[HorribleSubs] Series Title! S01 [Web][MKV][h264][2160p][AAC 2.0][Softsubs (HorribleSubs)]", false)]
         public void should_parse_webdl2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.WEBDL2160p, proper);
@@ -297,6 +302,9 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("[Coalgirls]_Durarara!!_01_(1920x1080_Blu-ray_FLAC)_[8370CB8F].mkv", false)]
         [TestCase("Planet.Earth.S01E11.Ocean.Deep.1080p.HD-DVD.DD.VC1-TRB", false)]
         [TestCase("Spirited Away(2001) Bluray FHD Hi10P.mkv", false)]
+        [TestCase("V for Vendetta 2005 1080p UHD BluRay DD+7.1 x264-LoRD.mkv", false)]
+        [TestCase("Rise.Of.The.Planet.Of.The.Apes.2011.1080p.UHD.BluRay.DD5.1.HDR.x265-CtrlHD.mkv", false)]
+        [TestCase("Rise.Of.The.Planet.Of.The.Apes.2011.UHD.BluRay.DD5.1.HDR.x265-CtrlHD/ctrlhd-rotpota-1080p.mkv", false)]
         public void should_parse_bluray1080p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.Bluray1080p, proper);
@@ -315,6 +323,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("House.of.Cards.US.s05e13.4K.UHD.Bluray", false)]
         [TestCase("House.of.Cards.US.s05e13.UHD.4K.Bluray", false)]
         [TestCase("[DameDesuYo] Backlog Bundle - Part 1 (BD 4K 8bit FLAC)", false)]
+        [TestCase("X-Men.Days.of.Future.Past.2014.2160p.UHD.BluRay.X265-IAMABLE.mkv", false)]
         public void should_parse_bluray2160p_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.Bluray2160p, proper);
@@ -323,6 +332,7 @@ namespace NzbDrone.Core.Test.ParserTests
         [TestCase("Yuri!!! on ICE - S01E12[JP BD 2160p Remux][ENG subs]", false)]
         [TestCase("Agents.of.S.H.I.E.L.D.S01E08.The.Well.BluRay.2160p.AVC.DTS-HD.MA.5.1.REMUX-FraMeSToR", false)]
         [TestCase("Miami.Vice.2x11.Nato.Per.La.Truffa.Bluray.Remux.AVC.2160p.AC3.ITA", false)]
+        [TestCase("[Dolby Vision] Game.of.Thrones.S07.MULTi.UHD.BLURAY.REMUX.DV-NoTag", false)]
         public void should_parse_bluray2160p_remux_quality(string title, bool proper)
         {
             ParseAndVerifyQuality(title, Quality.Bluray2160pRemux, proper);
