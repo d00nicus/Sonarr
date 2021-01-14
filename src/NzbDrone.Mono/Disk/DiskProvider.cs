@@ -73,16 +73,43 @@ namespace NzbDrone.Mono.Disk
             SetPermissions(path, mask, group, permissions);
         }
 
-        public override void SetPermissions(string path, string mask, string group)
+        public override void SetPermissions(string path, string mask, string user, string group)
         {
-            var permissions = NativeConvert.FromOctalPermissionString(mask);
+            SetPermissions(path, mask);
+            SetOwner(path, user, group);
+        }
 
-            if (File.Exists(path))
+        private void SetPermissions(string path, string mask)
+        {
+            Logger.Debug("Setting permissions: {0} on {1}", mask, path);
+
+            var filePermissions = NativeConvert.FromOctalPermissionString(mask);
+
+            if (Syscall.chmod(path, filePermissions) < 0)
             {
-                permissions = GetFilePermissions(permissions);
+                var error = Stdlib.GetLastError();
+
+                throw new LinuxPermissionsException("Error setting file permissions: " + error);
+            }
+        }
+
+        private void SetOwner(string path, string user, string group)
+        {
+            if (string.IsNullOrWhiteSpace(user) && string.IsNullOrWhiteSpace(group))
+            {
+                Logger.Debug("User and Group for chown not configured, skipping chown.");
+                return;
             }
 
-            SetPermissions(path, mask, group, permissions);
+            var userId = GetUserId(user);
+            var groupId = GetGroupId(group);
+
+            if (Syscall.chown(path, userId, groupId) < 0)
+            {
+                var error = Stdlib.GetLastError();
+
+                throw new LinuxPermissionsException("Error setting file owner and/or group: " + error);
+            }
         }
 
         protected void SetPermissions(string path, string mask, string group, FilePermissions permissions)
@@ -126,7 +153,7 @@ namespace NzbDrone.Mono.Disk
 
             return permissions;
         }
-
+        /*
         public override bool IsValidFolderPermissionMask(string mask)
         {
             try
@@ -152,8 +179,8 @@ namespace NzbDrone.Mono.Disk
                 return false;
             }
         }
-
-        public override void CopyPermissions(string sourcePath, string targetPath)
+        */
+        public override void CopyPermissions(string sourcePath, string targetPath, bool includeOwner)
         {
             try
             {
@@ -163,6 +190,10 @@ namespace NzbDrone.Mono.Disk
                 if (srcStat.st_mode != tgtStat.st_mode)
                 {
                     Syscall.chmod(targetPath, srcStat.st_mode);
+                }
+                if (includeOwner && (srcStat.st_uid != tgtStat.st_uid || srcStat.st_gid != tgtStat.st_gid))
+                {
+                    Syscall.chown(targetPath, srcStat.st_uid, srcStat.st_gid);
                 }
             }
             catch (Exception ex)
@@ -182,6 +213,7 @@ namespace NzbDrone.Mono.Disk
                                      .DistinctBy(v => v.RootDirectory)
                                      .ToList();
         }
+
 
         protected override bool IsSpecialMount(IMount mount)
         {

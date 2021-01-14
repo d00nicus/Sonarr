@@ -252,6 +252,27 @@ namespace NzbDrone.Core.Configuration
             set { SetValue("SetPermissionsLinux", value); }
         }
 
+         public string FolderChmod
+        {
+            get { return GetValue("FolderChmod", "0755"); }
+
+            set { SetValue("FolderChmod", value); }
+        }
+
+        public string FileChmod
+        {
+            get { return GetValue("FileChmod", "0644"); }
+
+            set { SetValue("FileChmod", value); }
+        }
+
+        public string ChownUser
+        {
+            get { return GetValue("ChownUser", ""); }
+
+            set { SetValue("ChownUser", value); }
+        }
+
         public string ChmodFolder
         {
             get { return GetValue("ChmodFolder", "755"); }

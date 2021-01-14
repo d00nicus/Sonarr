@@ -93,12 +93,12 @@ namespace NzbDrone.Windows.Disk
 
         }
 
-        public override void SetPermissions(string path, string mask, string group)
+        public override void SetPermissions(string path, string mask, string user, string group)
         {
 
         }
 
-        public override void CopyPermissions(string sourcePath, string targetPath)
+        public override void CopyPermissions(string sourcePath, string targetPath, bool includeOwner)
         {
 
         }

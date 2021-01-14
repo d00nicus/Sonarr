@@ -55,15 +55,16 @@ namespace NzbDrone.Core.MediaFiles
 
             else
             {
-                SetMonoPermissions(path);
+                SetMonoPermissions(path, _configService.FileChmod);
             }
         }
+
 
         public void SetFolderPermissions(string path)
         {
             if (OsInfo.IsNotWindows)
             {
-                SetMonoPermissions(path);
+                SetMonoPermissions(path, _configService.FolderChmod);
             }
         }
 
@@ -76,7 +77,7 @@ namespace NzbDrone.Core.MediaFiles
             }
         }
 
-        private void SetMonoPermissions(string path)
+        private void SetMonoPermissions(string path, string permissions)
         {
             if (!_configService.SetPermissionsLinux)
             {
@@ -85,7 +86,7 @@ namespace NzbDrone.Core.MediaFiles
 
             try
             {
-                _diskProvider.SetPermissions(path, _configService.ChmodFolder, _configService.ChownGroup);
+                _diskProvider.SetPermissions(path, permissions, _configService.ChownUser, _configService.ChownGroup);
             }
 
             catch (Exception ex)
