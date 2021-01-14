@@ -382,15 +382,14 @@ class MediaManagement extends Component {
                         advancedSettings={advancedSettings}
                         isAdvanced={true}
                       >
-                        <FormLabel>chmod Folder</FormLabel>
+                        <FormLabel>File chmod mode</FormLabel>
 
                         <FormInputGroup
-                          type={inputTypes.UMASK}
+                          type={inputTypes.TEXT}
                           name="chmodFolder"
                           helpText="Octal, applied to media files when imported/renamed by Sonarr"
-                          helpTextWarning="This only works if the user running sonarr is the owner of the file. It's better to ensure the download client sets the permissions properly."
                           onChange={onInputChange}
-                          {...settings.chmodFolder}
+                          {...settings.fileChmod}
                         />
                       </FormGroup>
 
